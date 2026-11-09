@@ -1,0 +1,174 @@
+
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+
+    <title>Lista de Signos - ZodiacoStacy</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Firebase -->
+    <script defer src="/__/firebase/13.2.0/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/13.2.0/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/13.2.0/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/init.js"></script>
+
+    <!-- Autenticación -->
+    <script defer src="js/users/islogin.js"></script>
+
+    <!-- Cierre por inactividad -->
+    <script defer src="js/users/inactividad.js"></script>
+
+    <!-- Tarjetas zodiacales seleccionables -->
+    <script defer src="js/zodiac/lstzodiaco.js?v=3"></script>
+
+    <script>
+        window.addEventListener('load', function () {
+            validar();
+        });
+    </script>
+</head>
+
+<body class="container">
+
+    <header class="header row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+
+            <div class="container-fluid">
+
+                <a class="navbar-brand" href="index.html">
+                    ZodiacoStacy
+                </a>
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown"
+                        aria-controls="navbarNavDropdown"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse"
+                     id="navbarNavDropdown">
+
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">
+                                Inicio
+                            </a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               id="menuHoroscopo"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Horóscopo
+                            </a>
+
+                            <ul class="dropdown-menu"
+                                aria-labelledby="menuHoroscopo">
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="lista.html">
+                                        Listar Signos
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="agregar.html">
+                                        Agregar Signo
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               id="menuUsuarios"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Usuarios
+                            </a>
+
+                            <ul class="dropdown-menu"
+                                aria-labelledby="menuUsuarios">
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="registrar.html">
+                                        Registrar nuevo usuario
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="#"
+                               onclick="salir(); return false;">
+                                Cerrar sesión
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="row">
+
+        <div class="col-12 mb-3">
+
+            <h4>Signos zodiacales</h4>
+
+            <p>
+                Consulta los signos zodiacales,
+                sus elementos, astros celestes
+                y piedras preciosas.
+            </p>
+
+        </div>
+
+        <!-- Tarjetas zodiacales -->
+        <div id="tabla"
+             class="d-flex flex-wrap justify-content-center">
+        </div>
+
+    </main>
+
+    <footer class="row"></footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+</body>
+</html>

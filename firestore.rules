@@ -1,0 +1,93 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // REGLAS PARA LOS USUARIOS
+    match /datosUsuarios/{document} {
+
+      // Consultar los datos del usuario autenticado
+      allow read: if request.auth != null
+        && resource.data.idemp == request.auth.uid;
+
+      // Registrar usuarios con ambas fechas
+      allow create: if request.auth != null
+        && request.resource.data.idemp == request.auth.uid
+        && request.resource.data.usuario is string
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.fechaCreacion is timestamp
+        && request.resource.data.ultAcceso is timestamp;
+
+      // Actualizar únicamente el último acceso
+      allow update: if request.auth != null
+        && resource.data.idemp == request.auth.uid
+        && request.resource.data.diff(resource.data)
+             .affectedKeys().hasOnly(['ultAcceso'])
+        && request.resource.data.ultAcceso is timestamp;
+
+      allow delete: if false;
+    }
+
+    // REGLAS PARA LOS SIGNOS ZODIACALES
+    match /datosZodiaco/{document} {
+
+      // Consultar signos con sesión iniciada
+      allow read: if request.auth != null;
+
+      // Registrar signos con todos los campos obligatorios
+      allow create: if request.auth != null
+        && datosSignoValidos();
+
+      // Modificar signos, incluidos los registros anteriores
+      allow update: if request.auth != null
+        && datosSignoValidos();
+
+      // No permitir eliminar signos
+      allow delete: if false;
+    }
+
+    // Validación de los datos del signo zodiacal
+    function datosSignoValidos() {
+      let datos = request.resource.data;
+
+      return datos.keys().hasAll([
+          'posic',
+          'signo',
+          'rango',
+          'url',
+          'elemento',
+          'astro',
+          'piedra'
+        ])
+        && datos.keys().hasOnly([
+          'posic',
+          'signo',
+          'rango',
+          'url',
+          'elemento',
+          'astro',
+          'piedra'
+        ])
+        && datos.posic is int
+        && datos.posic >= 1
+        && datos.posic <= 12
+        && datos.signo is string
+        && datos.signo.size() > 0
+        && datos.rango is string
+        && datos.rango.size() > 0
+        && datos.url is string
+        && datos.url.size() > 0
+        && datos.elemento in [
+          'Fuego',
+          'Tierra',
+          'Aire',
+          'Agua'
+        ]
+        && datos.astro is string
+        && datos.astro.size() > 0
+        && datos.piedra is string
+        && datos.piedra.size() > 0;
+    }
+  }
+}

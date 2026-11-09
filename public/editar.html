@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Editar signo zodiacal - ZodiacoStacy</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Firebase -->
+    <script defer src="/__/firebase/13.2.0/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/13.2.0/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/13.2.0/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/init.js"></script>
+
+    <!-- Validación de sesión -->
+    <script defer src="js/users/islogin.js"></script>
+
+    <!-- Cierre automático por inactividad -->
+    <script defer src="js/users/inactividad.js"></script>
+
+    <!-- Edición de signos -->
+    <script defer src="js/zodiac/editarsigno.js"></script>
+
+    <script>
+        window.addEventListener('load', function () {
+            validar();
+        });
+    </script>
+</head>
+
+<body class="container">
+
+    <header class="header row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <div class="container-fluid">
+
+                <a class="navbar-brand" href="index.html">
+                    ZodiacoStacy
+                </a>
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown"
+                        aria-controls="navbarNavDropdown"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse"
+                     id="navbarNavDropdown">
+
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">
+                                Inicio
+                            </a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               id="menuHoroscopo"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Horóscopo
+                            </a>
+
+                            <ul class="dropdown-menu"
+                                aria-labelledby="menuHoroscopo">
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="lista.html">
+                                        Listar Signos
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="agregar.html">
+                                        Agregar Signo
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               id="menuUsuarios"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Usuarios
+                            </a>
+
+                            <ul class="dropdown-menu"
+                                aria-labelledby="menuUsuarios">
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="registrar.html">
+                                        Registrar nuevo usuario
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="#"
+                               onclick="salir(); return false;">
+                                Cerrar sesión
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="row">
+
+        <div class="col-md-8 col-lg-6 mx-auto">
+
+            <h4 class="mb-3">Editar signo zodiacal</h4>
+
+            <p class="text-muted">
+                Modificá la información del signo seleccionado.
+            </p>
+
+            <!-- Mensajes de carga y error -->
+            <div id="mensajeEstado"
+                 class="alert alert-info">
+                Cargando información del signo...
+            </div>
+
+            <!-- Formulario -->
+            <form id="formEditar" class="d-none">
+
+                <div class="mb-3">
+                    <label for="txtPosic" class="form-label">
+                        Posición:
+                    </label>
+
+                    <input type="number"
+                           id="txtPosic"
+                           class="form-control"
+                           min="1"
+                           max="12"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtSigno" class="form-label">
+                        Signo zodiacal:
+                    </label>
+
+                    <input type="text"
+                           id="txtSigno"
+                           class="form-control"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtRango" class="form-label">
+                        Rango de fechas:
+                    </label>
+
+                    <input type="text"
+                           id="txtRango"
+                           class="form-control"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtElemento" class="form-label">
+                        Elemento:
+                    </label>
+
+                    <select id="txtElemento"
+                            class="form-select"
+                            required>
+                        <option value="">
+                            Seleccione un elemento
+                        </option>
+                        <option value="Fuego">Fuego</option>
+                        <option value="Tierra">Tierra</option>
+                        <option value="Aire">Aire</option>
+                        <option value="Agua">Agua</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtAstro" class="form-label">
+                        Astro celeste:
+                    </label>
+
+                    <input type="text"
+                           id="txtAstro"
+                           class="form-control"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtPiedra" class="form-label">
+                        Piedra preciosa:
+                    </label>
+
+                    <input type="text"
+                           id="txtPiedra"
+                           class="form-control"
+                           required>
+                </div>
+
+                <!-- Imagen actual -->
+                <div class="mb-3 text-center">
+                    <label class="form-label d-block">
+                        Imagen actual:
+                    </label>
+
+                    <img id="imagenActual"
+                         alt="Imagen del signo zodiacal"
+                         class="img-fluid rounded"
+                         style="max-width: 180px;">
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtUrl" class="form-label">
+                        Ruta de la imagen:
+                    </label>
+
+                    <input type="text"
+                           id="txtUrl"
+                           class="form-control"
+                           required>
+
+                    <small class="text-muted">
+                        Ejemplo: imagenes/01_Acuario.png
+                    </small>
+                </div>
+
+                <!-- Botones -->
+                <div class="d-flex gap-2 mb-4">
+
+                    <button type="submit"
+                            id="btnGuardar"
+                            class="btn btn-primary">
+                        Guardar cambios
+                    </button>
+
+                    <a href="lista.html"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    <footer class="row"></footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+</body>
+</html>
